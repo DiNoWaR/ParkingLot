@@ -6,7 +6,7 @@ import com.gojec.core.parkinglot.parkinglot.ParkingLot
 import com.gojec.core.parkinglot.vehicle.Vehicle
 
 /**
-  * Parser of parking lots command
+  * Parser of parking lots commands
   */
 object CommandParser {
 
