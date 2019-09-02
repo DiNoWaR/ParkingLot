@@ -1,7 +1,7 @@
-package com.gojec.core.parkinglot
+package com.gojec.core.parkinglot.parkinglot
 
-import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable.Map
+import com.gojec.core.parkinglot.vehicle.Vehicle
+import scala.collection.mutable.{ArrayBuffer, Map}
 
 /**
   * Contains and manages parking functionality
