@@ -1,6 +1,7 @@
 package com.gojec.core.parkinglot.parkinglot
 
 import com.gojec.core.parkinglot.vehicle.Vehicle
+
 import scala.collection.mutable.{ArrayBuffer, Map}
 
 /**
@@ -9,6 +10,11 @@ import scala.collection.mutable.{ArrayBuffer, Map}
   * @param capacity is max capacity of vehicles in parking
   */
 class ParkingLot(capacity: Int) {
+
+  private var currentSlot = 0
+
+
+  private var currentCapacity = 0
 
   private val parkingSlots = Map[Int, Vehicle]()
 
@@ -21,37 +27,59 @@ class ParkingLot(capacity: Int) {
 
 
   def parkVehicle(vehicle: Vehicle): Unit = {
-    val slot = allocateSlot()
 
-    parkingSlots += (slot -> vehicle)
+    if (currentCapacity == capacity) {
+      println("Sorry, parking lot is full")
+    } else {
 
-    addVehicleToColorVehicles(vehicle)
-    addVehicleToRegNumberSlot(slot, vehicle.regNumber)
-    addVehicleColorToColorSlots(slot, vehicle.color)
+      val slot = allocateSlot()
 
-    println(s"Allocated slot number: $slot")
+      parkingSlots += (slot -> vehicle)
+
+      addVehicleToColorVehicles(vehicle)
+      addVehicleToRegNumberSlot(slot, vehicle.regNumber)
+      addVehicleColorToColorSlots(slot, vehicle.color)
+
+      currentCapacity += 1
+      println(s"Allocated slot number: $slot")
+
+    }
+
   }
 
   def unregisterVehicle(slot: Int): Unit = {
-    val vehicle = parkingSlots(slot)
 
-    deleteFromColorVehicles(vehicle)
-    deleteFromRegNumberSlot(vehicle)
-    deleteFromColorSlots(slot, vehicle)
+    val vgg = parkingSlots.get(slot) match {
 
-    parkingSlots -= slot
-    println(s"Slot number $slot is free")
+      case Some(vehicle) => {
+        deleteFromColorVehicles(vehicle)
+        deleteFromRegNumberSlot(vehicle)
+        deleteFromColorSlots(slot, vehicle)
+
+        parkingSlots -= slot
+        currentCapacity -= 1
+        println(s"Slot number $slot is free")
+      }
+      case None => println("Not found")
+    }
+
   }
 
 
-  def getSlotByRegNumber(regNumber: String): Int = {
-    regNumberSlot.getOrElse(regNumber, throw new Exception())
+  def getSlotByRegNumber(regNumber: String): Either[String, Int] = {
+
+    regNumberSlot.get(regNumber) match {
+
+      case Some(slot) => Right(slot)
+      case None => Left("Not found")
+    }
   }
 
-  def getRegNumbersByColor(color: String): ArrayBuffer[String] = {
+  def getRegNumbersByColor(color: String): Either[String, ArrayBuffer[String]] = {
 
     colorVehicles.get(color) match {
-      case Some(vehicles) => vehicles.map(vehicle => vehicle.regNumber)
+      case Some(vehicles) => Right(vehicles.map(vehicle => vehicle.regNumber))
+      case None => Left("Not found")
     }
   }
 
@@ -60,6 +88,10 @@ class ParkingLot(capacity: Int) {
     colorSlots.get(color) match {
       case Some(slots) => slots
     }
+  }
+
+  def getStatus(): Map[Int, Vehicle] = {
+    parkingSlots
   }
 
 
@@ -92,6 +124,18 @@ class ParkingLot(capacity: Int) {
     }
   }
 
+
+  private def allocateSlot(): Int = {
+
+    if (parkingSlots.isEmpty) {
+      currentSlot += 1
+      1
+    } else {
+      currentSlot += 1
+      currentSlot
+    }
+
+  }
 
   private def deleteFromColorVehicles(vehicle: Vehicle): Unit = {
 
@@ -129,8 +173,5 @@ class ParkingLot(capacity: Int) {
     }
 
   }
-
-
-  private def allocateSlot() = 1
 
 }

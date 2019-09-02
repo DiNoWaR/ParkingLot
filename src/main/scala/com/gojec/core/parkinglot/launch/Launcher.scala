@@ -10,7 +10,7 @@ import scala.io.StdIn.readLine
 
 object Launcher {
 
-  var parkingSlot: ParkingLot = _
+  var parkingLot: ParkingLot = _
 
   def main(args: Array[String]): Unit = {
 
@@ -22,21 +22,51 @@ object Launcher {
 
         case Right(parsedCommand) => parsedCommand._1 match {
 
-          case Commands.CreateParkingLot.message => parkingSlot = new ParkingLot(parsedCommand._2.head.toInt)
+          case Commands.CreateParkingLot.message => parkingLot = new ParkingLot(parsedCommand._2.head.toInt)
 
-          case Commands.Park.message => parkingSlot.parkVehicle(Vehicle(parsedCommand._2.head, parsedCommand._2(1)))
+          case Commands.Park.message => parkingLot.parkVehicle(Vehicle(parsedCommand._2.head, parsedCommand._2(1)))
 
-          case Commands.Leave.message => parkingSlot.unregisterVehicle(parsedCommand._2.head.toInt)
+          case Commands.Leave.message => parkingLot.unregisterVehicle(parsedCommand._2.head.toInt)
 
-          case Commands.Status.message => println("Ups")
+          case Commands.Status.message => {
+
+            System.out.format("%1s%20s%10s", "Slot No.", "Registration No", "Colour")
+            println()
+
+            parkingLot.getStatus().toList.sortBy(_._1).foreach(item => {
+              System.out.format("%1s%25s%11s", item._1.toString, item._2.regNumber, item._2.color)
+              println()
+            })
+          }
 
           case Commands.RegNumbersByColor.message => {
-            parkingSlot.getRegNumbersByColor(parsedCommand._2.head).foreach(regNumber => print(s"$regNumber, "))
+
+            parkingLot.getRegNumbersByColor(parsedCommand._2.head) match {
+              case Left(error) => println(error)
+
+              case Right(regNumbers) => {
+                regNumbers.foreach(regNumber => print(s"$regNumber, "))
+                println()
+              }
+            }
           }
 
           case Commands.SlotsByColor.message => {
-            val vff = parkingSlot.getSlotByRegNumber(parsedCommand._2.head)
+            parkingLot.getSlotsByColor(parsedCommand._2.head).foreach(slot => print(s"$slot, "))
+            println()
           }
+
+          case Commands.SlotByRegNumber.message => {
+
+            val slot = parkingLot.getSlotByRegNumber(parsedCommand._2.head) match {
+              case Left(error) => println(error)
+              case Right(slot) => println(slot)
+            }
+
+          }
+
+          case Commands.Exit.message => System.exit(0)
+
         }
       }
     })

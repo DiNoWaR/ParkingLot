@@ -11,13 +11,13 @@ object CommandParser {
 
     result.head match {
       case Commands.CreateParkingLot.message
-        || Commands.Park.message
-        || Commands.Leave.message
-        || Commands.RegNumbersByColor.message
-        || Commands.SlotByRegNumber.message
-        || Commands.SlotsByColor.message
-        || Commands.Status.message
-        || Commands.Exit.message => Right((result.head, result.tail.toVector))
+        | Commands.Park.message
+        | Commands.Leave.message
+        | Commands.RegNumbersByColor.message
+        | Commands.SlotByRegNumber.message
+        | Commands.SlotsByColor.message
+        | Commands.Status.message
+        | Commands.Exit.message => Right((result.head, result.tail.toVector))
 
       case _ => Left(Commands.InvalidCommand.message)
 
