@@ -7,12 +7,11 @@ import scala.collection.mutable.{ArrayBuffer, Map}
 /**
   * Contains and manages parking functionality
   *
-  * @param capacity is max capacity of vehicles in parking
+  * @param maxCapacity is max capacity of vehicles in parking
   */
-class ParkingLot(capacity: Int) {
+class ParkingLot(maxCapacity: Int) {
 
   private var currentSlot = 0
-
 
   private var currentCapacity = 0
 
@@ -26,10 +25,11 @@ class ParkingLot(capacity: Int) {
   private val regNumberSlot = Map[String, Int]()
 
 
-  def parkVehicle(vehicle: Vehicle): Unit = {
+  def parkVehicle(vehicle: Vehicle): Either[Unit, Unit] = {
 
-    if (currentCapacity == capacity) {
-      println("Sorry, parking lot is full")
+    if (currentCapacity == maxCapacity) {
+      Left(println("Sorry, parking lot is full"))
+
     } else {
 
       val slot = allocateSlot()
@@ -41,7 +41,7 @@ class ParkingLot(capacity: Int) {
       addVehicleColorToColorSlots(slot, vehicle.color)
 
       currentCapacity += 1
-      println(s"Allocated slot number: $slot")
+      Right(println(s"Allocated slot number: $slot"))
 
     }
 
@@ -83,15 +83,20 @@ class ParkingLot(capacity: Int) {
     }
   }
 
-  def getSlotsByColor(color: String): ArrayBuffer[Int] = {
+  def getSlotsByColor(color: String): Either[String, ArrayBuffer[Int]] = {
 
     colorSlots.get(color) match {
-      case Some(slots) => slots
+      case Some(slots) => Right(slots)
+      case None => Left("Not found")
     }
   }
 
   def getStatus(): Map[Int, Vehicle] = {
     parkingSlots
+  }
+
+  def getCurrentCapacity(): Int = {
+    currentCapacity
   }
 
 
@@ -128,8 +133,7 @@ class ParkingLot(capacity: Int) {
   private def allocateSlot(): Int = {
 
     if (parkingSlots.isEmpty) {
-      currentSlot += 1
-      1
+      0
     } else {
       currentSlot += 1
       currentSlot
