@@ -35,7 +35,7 @@ class SlotsAllocator(maxCapacity: Int) {
   }
 
   def checkAndUpdateMinFreeSlot(slot: Int) = {
-    checkAndPlaceSlotNodeToHead(slot)
+    updateNearestFreeSlot(slot)
   }
 
   /**
@@ -43,7 +43,7 @@ class SlotsAllocator(maxCapacity: Int) {
     *
     * @param slot is number of slot
     */
-  private def checkAndPlaceSlotNodeToHead(slot: Int): Unit = {
+  private def updateNearestFreeSlot(slot: Int): Unit = {
 
     if (slot < head.value | head.value == -1) {
 
