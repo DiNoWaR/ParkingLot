@@ -37,7 +37,9 @@ class ParkingLot(maxCapacity: Int) {
     */
   private val regNumberSlot = Map[String, Int]()
 
-
+  /**
+    * Responsible for slot allocation for vehicles
+    */
   private val allocator: SlotsAllocator = new SlotsAllocator(maxCapacity)
 
   /**
