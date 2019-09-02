@@ -12,32 +12,12 @@ class ParkingLot(capacity: Int) {
 
   private val parkingSlots = Map[Int, Vehicle]()
 
+
   private val colorVehicles = Map[String, ArrayBuffer[Vehicle]]()
 
   private val colorSlots = Map[String, ArrayBuffer[Int]]()
 
   private val regNumberSlot = Map[String, Int]()
-
-
-  def getSlotByRegNumber(regNumber: String): Int = {
-    regNumberSlot.getOrElse(regNumber, throw new Exception())
-  }
-
-  def getRegNumbersByColor(color: String): ArrayBuffer[String] = {
-
-    colorVehicles.get(color) match {
-      case Some(vehicles) => vehicles.map(vehicle => vehicle.regNumber)
-      case None => throw new Exception()
-    }
-  }
-
-  def getSlotsByColor(color: String): ArrayBuffer[Int] = {
-
-    colorSlots.get(color) match {
-      case Some(slots) => slots
-      case None => throw new Exception()
-    }
-  }
 
 
   def registerVehicle(vehicle: Vehicle): Unit = {
@@ -52,16 +32,36 @@ class ParkingLot(capacity: Int) {
     println(s"Allocated slot number: $slot")
   }
 
-
   def unregisterVehicle(slot: Int): Unit = {
     val vehicle = parkingSlots(slot)
 
     deleteFromColorVehicles(vehicle)
     deleteFromRegNumberSlot(vehicle)
+    deleteFromColorSlots(slot, vehicle)
 
     parkingSlots -= slot
     println(s"Slot number $slot is free")
   }
+
+
+  def getSlotByRegNumber(regNumber: String): Int = {
+    regNumberSlot.getOrElse(regNumber, throw new Exception())
+  }
+
+  def getRegNumbersByColor(color: String): ArrayBuffer[String] = {
+
+    colorVehicles.get(color) match {
+      case Some(vehicles) => vehicles.map(vehicle => vehicle.regNumber)
+    }
+  }
+
+  def getSlotsByColor(color: String): ArrayBuffer[Int] = {
+
+    colorSlots.get(color) match {
+      case Some(slots) => slots
+    }
+  }
+
 
   private def addVehicleToColorVehicles(vehicle: Vehicle): Unit = {
 
@@ -111,6 +111,23 @@ class ParkingLot(capacity: Int) {
 
   private def deleteFromRegNumberSlot(vehicle: Vehicle): Unit = {
     regNumberSlot -= vehicle.regNumber
+  }
+
+  private def deleteFromColorSlots(slot: Int, vehicle: Vehicle): Unit = {
+
+    colorSlots.get(vehicle.color) match {
+
+      case Some(slots) => {
+
+        slots -= slot
+
+        if (slots.isEmpty) {
+          colorSlots -= vehicle.color
+        }
+      }
+
+    }
+
   }
 
 
