@@ -126,4 +126,21 @@ class ParkingLotSuite extends FunSuite {
 
   }
 
+  test("slots ") {
+
+    val parkingLot = new ParkingLot(6)
+
+    parkingLot.parkVehicle(Vehicle("KA-01-HH-1234", "White"))
+    parkingLot.parkVehicle(Vehicle("KA-01-HH-9999", "White"))
+    parkingLot.parkVehicle(Vehicle("KA-01-BB-0001", "Black"))
+    parkingLot.parkVehicle(Vehicle("KA-01-HH-7777", "Red"))
+    parkingLot.parkVehicle(Vehicle("KA-01-HH-2701", "Blue"))
+    parkingLot.parkVehicle(Vehicle("KA-01-HH-3141", "Black"))
+
+    parkingLot.unregisterVehicle(4)
+
+    parkingLot.parkVehicle(Vehicle("KA-01-P-333", "White"))
+
+  }
+
 }
