@@ -1,4 +1,4 @@
-package com.gojec.core.parkinglot.parkinglot
+package com.gojec.core.parkinglot.slotallocator
 
 import scala.collection.mutable.{Map => MMap}
 

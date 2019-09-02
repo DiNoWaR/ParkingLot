@@ -1,11 +1,14 @@
 package com.gojec.core.parkinglot.parkinglot
 
+import com.gojec.core.parkinglot.slotallocator.SlotsAllocator
 import com.gojec.core.parkinglot.vehicle.Vehicle
 
 import scala.collection.mutable.{ArrayBuffer, Map}
 
 /**
   * Contains and manages parking functionality
+  *
+  * All operations work for O(1) complexity
   *
   * @param maxCapacity is max capacity of vehicles in parking
   */
@@ -102,6 +105,7 @@ class ParkingLot(maxCapacity: Int) {
       case None => Left("Not found")
     }
   }
+
   /**
     * Returns  Color -> Vehicles Reg Numbers mapping
     * O(1) complexity
@@ -116,6 +120,12 @@ class ParkingLot(maxCapacity: Int) {
     }
   }
 
+  /**
+    * Returns  Color -> Slots mapping
+    * O(1) complexity
+    *
+    * @param color is color of vehicle
+    */
   def getSlotsByColor(color: String): Either[String, ArrayBuffer[Int]] = {
 
     colorSlots.get(color) match {
