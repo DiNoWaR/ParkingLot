@@ -126,4 +126,35 @@ class ParkingLotSuite extends FunSuite {
 
   }
 
+  test("slots by reg number should be returned properly") {
+    val parkingLot = new ParkingLot(6)
+
+    parkingLot.parkVehicle(Vehicle("TT-04-AH-6788", "Red"))
+    parkingLot.parkVehicle(Vehicle("AK-03-MH-5566", "Blue"))
+    parkingLot.parkVehicle(Vehicle("KA-01-TH-4321", "Green"))
+    parkingLot.parkVehicle(Vehicle("KA-02-MH-5521", "Green"))
+    parkingLot.parkVehicle(Vehicle("AM-02-MH-5521", "Red"))
+    parkingLot.parkVehicle(Vehicle("DF-77-MH-7861", "Blue"))
+
+    assert(parkingLot.getSlotByRegNumber("AK-03-MH-5566").right.get == 2)
+
+  }
+
+  test("slots by reg number should not be returned") {
+    val parkingLot = new ParkingLot(6)
+
+    parkingLot.parkVehicle(Vehicle("TT-04-AH-6788", "Red"))
+    parkingLot.parkVehicle(Vehicle("AK-03-MH-5566", "Blue"))
+    parkingLot.parkVehicle(Vehicle("KA-01-TH-4321", "Green"))
+    parkingLot.parkVehicle(Vehicle("KA-02-MH-5521", "Green"))
+    parkingLot.parkVehicle(Vehicle("AM-02-MH-5521", "Red"))
+    parkingLot.parkVehicle(Vehicle("DF-77-MH-7861", "Blue"))
+    parkingLot.parkVehicle(Vehicle("AS-77-HG-6543", "Blue"))
+    parkingLot.parkVehicle(Vehicle("TH-65-MM-7861", "Yellow"))
+
+
+    assert(parkingLot.getSlotByRegNumber("TH-65-MM-7861") == Left("Not found"))
+
+  }
+
 }
