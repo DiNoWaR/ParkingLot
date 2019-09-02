@@ -3,10 +3,12 @@ package com.gojec.core.parkinglot.parkinglot
 import scala.collection.mutable.{Map => MMap}
 
 /**
+  * Object that allocate nearest free slot for vehicle by using hashMap and double linked list
+  * All operations work for O(1) complexity
   *
-  * @param size
+  * @param maxCapacity is max capacity of parking lot
   */
-class LRU(size: Int) {
+class SlotsAllocator(maxCapacity: Int) {
 
   /**
     * Head of double linked list
@@ -18,23 +20,30 @@ class LRU(size: Int) {
     */
   private var last: Node = _
 
-  /**
-    *
-    */
+
   private val slotsNumberMap: Map[Int, Node] = initializeMap()
 
-
-  def getMinFreeSlot(): Int = {
+  /**
+    * Allocate slot for vehicle
+    *
+    * @return number of slots
+    */
+  def allocateSlot(): Int = {
     val minFreeSlot = head.value
-    placeSlotToLast()
+    placeSlotNodeToLast()
     minFreeSlot
   }
 
   def checkAndUpdateMinFreeSlot(slot: Int) = {
-    checkAndPlaceSlotToHead(slot)
+    checkAndPlaceSlotNodeToHead(slot)
   }
 
-  private def checkAndPlaceSlotToHead(slot: Int): Unit = {
+  /**
+    * Moves Node to head of list, when vehicle left parking if number of slot is less then head
+    *
+    * @param slot is number of slot
+    */
+  private def checkAndPlaceSlotNodeToHead(slot: Int): Unit = {
 
     if (slot < head.value | head.value == -1) {
 
@@ -64,6 +73,22 @@ class LRU(size: Int) {
     }
   }
 
+  /**
+    * Moves Node to last of list, when vehicle parks
+    *
+    */
+  private def placeSlotNodeToLast(): Unit = {
+    if (head.next != null) {
+      val newHead = head.next
+      newHead.previous = null
+      head.next = null
+      head.previous = last
+      last.next = head
+      last = head
+      head = newHead
+    }
+  }
+
   private def initializeSlots(): Node = {
 
     val head = Node(1, null, null)
@@ -72,7 +97,7 @@ class LRU(size: Int) {
 
     var counter = 2
 
-    while (counter <= size) {
+    while (counter <= maxCapacity) {
       val current = Node(counter, null, null)
       cursor.next = current
       current.previous = cursor
@@ -86,25 +111,13 @@ class LRU(size: Int) {
     head
   }
 
-  private def placeSlotToLast(): Unit = {
-    if (head.next != null) {
-      val newHead = head.next
-      newHead.previous = null
-      head.next = null
-      head.previous = last
-      last.next = head
-      last = head
-      head = newHead
-    }
-  }
-
   private def initializeMap(): Map[Int, Node] = {
 
     val resultMap = MMap[Int, Node]()
 
     var currentNode = head
 
-    for (count <- 1 until size) {
+    for (count <- 1 until maxCapacity) {
       resultMap += (count -> currentNode)
       currentNode = currentNode.next
     }

@@ -11,22 +11,37 @@ import scala.collection.mutable.{ArrayBuffer, Map}
   */
 class ParkingLot(maxCapacity: Int) {
 
-  private var currentSlot = 1
-
   private var currentCapacity = 0
 
+  /**
+    * Main storage of parking lot object
+    * Slot -> Vehicle mapping
+    */
   private val parkingSlots = Map[Int, Vehicle]()
 
-
+  /**
+    * Color -> Vehicles mapping
+    */
   private val colorVehicles = Map[String, ArrayBuffer[Vehicle]]()
 
+  /**
+    * Color -> Slots mapping
+    */
   private val colorSlots = Map[String, ArrayBuffer[Int]]()
 
+  /**
+    * RegNumber -> Slots mapping
+    */
   private val regNumberSlot = Map[String, Int]()
 
-  private val lru: LRU = new LRU(maxCapacity)
 
+  private val allocator: SlotsAllocator = new SlotsAllocator(maxCapacity)
 
+  /**
+    * Register the vehicle to parking lot
+    *
+    * @param vehicle is vehicle object
+    */
   def parkVehicle(vehicle: Vehicle): Either[Unit, Unit] = {
 
     if (currentCapacity == maxCapacity) {
@@ -49,6 +64,11 @@ class ParkingLot(maxCapacity: Int) {
 
   }
 
+  /**
+    * Removes the vehicle to parking lot
+    *
+    * @param slot is number of slot
+    */
   def unregisterVehicle(slot: Int): Unit = {
 
     parkingSlots.get(slot) match {
@@ -57,7 +77,7 @@ class ParkingLot(maxCapacity: Int) {
         deleteFromColorVehicles(vehicle)
         deleteFromRegNumberSlot(vehicle)
         deleteFromColorSlots(slot, vehicle)
-        lru.checkAndUpdateMinFreeSlot(slot)
+        allocator.checkAndUpdateMinFreeSlot(slot)
 
         parkingSlots -= slot
         currentCapacity -= 1
@@ -68,7 +88,12 @@ class ParkingLot(maxCapacity: Int) {
 
   }
 
-
+  /**
+    * Returns  RegNumber -> Slots mapping
+    * O(1) complexity
+    *
+    * @param regNumber is reg number of vehicle
+    */
   def getSlotByRegNumber(regNumber: String): Either[String, Int] = {
 
     regNumberSlot.get(regNumber) match {
@@ -77,7 +102,12 @@ class ParkingLot(maxCapacity: Int) {
       case None => Left("Not found")
     }
   }
-
+  /**
+    * Returns  Color -> Vehicles Reg Numbers mapping
+    * O(1) complexity
+    *
+    * @param color is color of vehicle
+    */
   def getRegNumbersByColor(color: String): Either[String, ArrayBuffer[String]] = {
 
     colorVehicles.get(color) match {
@@ -132,9 +162,13 @@ class ParkingLot(maxCapacity: Int) {
     }
   }
 
-
+  /**
+    * Allocates nearest free slot
+    *
+    * @return allocated slot
+    */
   private def allocateSlot(): Int = {
-    lru.getMinFreeSlot()
+    allocator.allocateSlot()
   }
 
   private def deleteFromColorVehicles(vehicle: Vehicle): Unit = {

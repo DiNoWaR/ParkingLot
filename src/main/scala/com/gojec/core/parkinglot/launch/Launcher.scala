@@ -57,7 +57,7 @@ object Launcher {
           }
 
           case Commands.SlotsByColor.message => {
-            parkingLot.getSlotsByColor(parsedCommand._2.head).foreach(slot => print(s"$slot, "))
+            parkingLot.getSlotsByColor(parsedCommand._2.head).foreach(slots => slots.foreach(slot => print(s"$slot, ")))
             println()
           }
 
