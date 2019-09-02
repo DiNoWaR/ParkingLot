@@ -18,9 +18,9 @@ class ParkingLotSuite extends FunSuite {
     parkingLot.parkVehicle(Vehicle("KA-03-MH-5566", "Blue"))
     parkingLot.parkVehicle(Vehicle("KA-01-TH-4321", "Green"))
 
-    parkingLot.unregisterVehicle(0)
     parkingLot.unregisterVehicle(1)
     parkingLot.unregisterVehicle(2)
+    parkingLot.unregisterVehicle(3)
 
     assert(parkingLot.getCurrentCapacity() == 0)
   }
@@ -107,7 +107,7 @@ class ParkingLotSuite extends FunSuite {
     parkingLot.parkVehicle(Vehicle("AM-02-MH-5521", "Red"))
     parkingLot.parkVehicle(Vehicle("DF-77-MH-7861", "Blue"))
 
-    assert(parkingLot.getSlotsByColor("Blue").right.get.toList.sorted == List(1, 5).sorted)
+    assert(parkingLot.getSlotsByColor("Blue").right.get.toList.sorted == List(2, 6).sorted)
 
   }
 

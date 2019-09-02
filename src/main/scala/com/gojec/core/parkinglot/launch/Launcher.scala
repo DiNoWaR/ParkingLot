@@ -5,7 +5,7 @@ import com.gojec.core.parkinglot.parkinglot.ParkingLot
 import com.gojec.core.parkinglot.parser.CommandParser
 import com.gojec.core.parkinglot.vehicle.Vehicle
 
-import scala.io.StdIn.readLine
+import scala.io.StdIn._
 
 
 object Launcher {
@@ -14,15 +14,20 @@ object Launcher {
 
   def main(args: Array[String]): Unit = {
 
-    args.foreach(command => {
+    while (true) {
 
-      CommandParser.parseCommand(readLine(command)) match {
+      val command = readLine()
+
+      CommandParser.parseCommand(command) match {
 
         case Left(invalid) => println(invalid)
 
         case Right(parsedCommand) => parsedCommand._1 match {
 
-          case Commands.CreateParkingLot.message => parkingLot = new ParkingLot(parsedCommand._2.head.toInt)
+          case Commands.CreateParkingLot.message => {
+            parkingLot = new ParkingLot(parsedCommand._2.head.toInt)
+            println(s"Created a parking lot with ${parsedCommand._2.head} slots")
+          }
 
           case Commands.Park.message => parkingLot.parkVehicle(Vehicle(parsedCommand._2.head, parsedCommand._2(1)))
 
@@ -69,7 +74,9 @@ object Launcher {
 
         }
       }
-    })
+
+    }
+
 
   }
 }

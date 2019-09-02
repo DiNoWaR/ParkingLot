@@ -11,7 +11,7 @@ import scala.collection.mutable.{ArrayBuffer, Map}
   */
 class ParkingLot(maxCapacity: Int) {
 
-  private var currentSlot = 0
+  private var currentSlot = 1
 
   private var currentCapacity = 0
 
@@ -23,6 +23,8 @@ class ParkingLot(maxCapacity: Int) {
   private val colorSlots = Map[String, ArrayBuffer[Int]]()
 
   private val regNumberSlot = Map[String, Int]()
+
+  private val lru: LRU = new LRU(maxCapacity)
 
 
   def parkVehicle(vehicle: Vehicle): Either[Unit, Unit] = {
@@ -49,12 +51,13 @@ class ParkingLot(maxCapacity: Int) {
 
   def unregisterVehicle(slot: Int): Unit = {
 
-    val vgg = parkingSlots.get(slot) match {
+    parkingSlots.get(slot) match {
 
       case Some(vehicle) => {
         deleteFromColorVehicles(vehicle)
         deleteFromRegNumberSlot(vehicle)
         deleteFromColorSlots(slot, vehicle)
+        lru.checkAndUpdateMinFreeSlot(slot)
 
         parkingSlots -= slot
         currentCapacity -= 1
@@ -131,14 +134,7 @@ class ParkingLot(maxCapacity: Int) {
 
 
   private def allocateSlot(): Int = {
-
-    if (parkingSlots.isEmpty) {
-      0
-    } else {
-      currentSlot += 1
-      currentSlot
-    }
-
+    lru.getMinFreeSlot()
   }
 
   private def deleteFromColorVehicles(vehicle: Vehicle): Unit = {
