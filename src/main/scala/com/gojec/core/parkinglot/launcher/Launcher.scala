@@ -1,9 +1,12 @@
-package com.gojec.core.parkinglot.launch
+package com.gojec.core.parkinglot.launcher
 
 import com.gojec.core.parkinglot.parkinglot.ParkingLot
 import com.gojec.core.parkinglot.runners.{InputFileRunner, InteractiveRunner}
 
-
+/**
+  * Launcher of program.
+  * Has 2 runners
+  */
 object Launcher {
 
   var parkingLot: ParkingLot = _

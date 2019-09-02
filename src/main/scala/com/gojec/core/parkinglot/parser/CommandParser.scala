@@ -1,11 +1,13 @@
 package com.gojec.core.parkinglot.parser
 
 import com.gojec.core.parkinglot.command.Commands
-import com.gojec.core.parkinglot.launch.Launcher.parkingLot
+import com.gojec.core.parkinglot.launcher.Launcher.parkingLot
 import com.gojec.core.parkinglot.parkinglot.ParkingLot
 import com.gojec.core.parkinglot.vehicle.Vehicle
 
-
+/**
+  * Parser of parking lots command
+  */
 object CommandParser {
 
   def parseAndExecute(command: String) = {
