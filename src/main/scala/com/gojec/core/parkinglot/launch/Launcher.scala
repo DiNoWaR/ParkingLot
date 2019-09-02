@@ -1,7 +1,7 @@
 package com.gojec.core.parkinglot.launch
 
 import com.gojec.core.parkinglot.parkinglot.ParkingLot
-import com.gojec.core.parkinglot.runners.InteractiveRunner
+import com.gojec.core.parkinglot.runners.{InputFileRunner, InteractiveRunner}
 
 
 object Launcher {
@@ -13,7 +13,9 @@ object Launcher {
     if (args.isEmpty) {
       InteractiveRunner.run()
     }
-
+    else {
+      InputFileRunner.run(args(0))
+    }
 
   }
 }
