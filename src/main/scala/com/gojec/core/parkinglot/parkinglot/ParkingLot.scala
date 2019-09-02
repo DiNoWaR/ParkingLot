@@ -20,7 +20,7 @@ class ParkingLot(capacity: Int) {
   private val regNumberSlot = Map[String, Int]()
 
 
-  def registerVehicle(vehicle: Vehicle): Unit = {
+  def parkVehicle(vehicle: Vehicle): Unit = {
     val slot = allocateSlot()
 
     parkingSlots += (slot -> vehicle)

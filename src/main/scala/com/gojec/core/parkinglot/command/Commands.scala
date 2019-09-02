@@ -6,6 +6,10 @@ object Commands {
     val message: String
   }
 
+  case object CreateParkingLot extends Command {
+    val message = "create_parking_lot"
+  }
+
   case object Park extends Command {
     val message = "park"
   }
@@ -32,6 +36,10 @@ object Commands {
 
   case object Exit extends Command {
     val message = "exit"
+  }
+
+  case object InvalidCommand extends Command {
+    val message = "Invalid Command"
   }
 
 }
