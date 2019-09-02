@@ -1,9 +1,12 @@
-package com.gojec.parkinglot
+package com.gojec.core.parkinglot
 
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Map
 
-
+/**
+  * Contains and manages parking functionality
+  * @param capacity is max capacity of vehicles in parking
+  */
 class ParkingLot(capacity: Int) {
 
   private val parkingSlots = Map[Int, Vehicle]()
@@ -60,6 +63,7 @@ class ParkingLot(capacity: Int) {
     deleteFromRegNumberSlot(vehicle)
 
     parkingSlots -= slot
+    println(s"Slot number $slot is free")
   }
 
   private def addVehicleToColorVehicles(vehicle: Vehicle): Unit = {
@@ -79,10 +83,6 @@ class ParkingLot(capacity: Int) {
     regNumberSlot += (vehicle.regNumber -> slot)
   }
 
-  /**
-    *
-    * @param vehicle
-    */
   private def deleteFromColorVehicles(vehicle: Vehicle): Unit = {
 
     colorVehicles.get(vehicle.color) match {
@@ -99,10 +99,6 @@ class ParkingLot(capacity: Int) {
     }
   }
 
-  /**
-    *
-    * @param vehicle
-    */
   private def deleteFromRegNumberSlot(vehicle: Vehicle): Unit = {
     regNumberSlot -= vehicle.regNumber
   }

@@ -1,4 +1,4 @@
-package com.gojec.parkinglot
+package com.gojec.core.parkinglot
 
 object Vgg {
 
@@ -6,7 +6,6 @@ object Vgg {
 
     val parkingLot = new ParkingLot(10)
 
-    println(parkingLot.parkingSlots.size)
 
   }
 
