@@ -1,3 +1,3 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
-scala $DIR/../target/scala-2.12/parkinglot_2.12-0.1.jar $1
+scala $DIR/../target/scala-2.12/parkinglot_2.12-0.1.jar
