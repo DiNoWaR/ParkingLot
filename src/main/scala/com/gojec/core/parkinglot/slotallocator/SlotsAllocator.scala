@@ -127,24 +127,3 @@ class SlotsAllocator(maxCapacity: Int) {
 }
 
 case class Node(value: Int, var next: Node, var previous: Node)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
