@@ -196,6 +196,7 @@ class ParkingLot(maxCapacity: Int) {
         }
       }
 
+      case None => println("Not Found")
     }
   }
 
@@ -216,6 +217,7 @@ class ParkingLot(maxCapacity: Int) {
         }
       }
 
+      case None => println("Not Found")
     }
 
   }

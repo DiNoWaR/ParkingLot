@@ -9,7 +9,7 @@ import scala.collection.mutable.{Set => MSet}
   */
 class SlotsAllocator(maxCapacity: Int) {
 
-  val slotSet: MSet[Node] = initializeSet()
+  private val slotSet: MSet[Node] = initializeSlotSet()
 
   def acquireSlot(): Int = {
     val nearestSlot = slotSet.min
@@ -20,10 +20,11 @@ class SlotsAllocator(maxCapacity: Int) {
   def releaseSlot(value: Int): Unit = {
     slotSet.find(item => item.value == value) match {
       case Some(slot) => slot.occupied = false
+      case None => println("Not found")
     }
   }
 
-  private def initializeSet(): MSet[Node] = {
+  private def initializeSlotSet(): MSet[Node] = {
 
     val initializedSet = MSet[Node]()
 
