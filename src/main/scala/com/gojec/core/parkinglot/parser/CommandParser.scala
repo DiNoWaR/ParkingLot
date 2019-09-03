@@ -42,21 +42,27 @@ object CommandParser {
           case Left(error) => println(error)
 
           case Right(regNumbers) => {
-            regNumbers.foreach(regNumber => print(s"$regNumber, "))
-            println()
+            println(regNumbers.mkString(", ").trim)
           }
         }
       }
 
       case Commands.SlotsByColor.message => {
-        parkingLot.getSlotsByColor(splittedCommand(1)).foreach(slots => slots.foreach(slot => print(s"$slot, ")))
-        println()
+        parkingLot.getSlotsByColor(splittedCommand(1)) match {
+
+          case Left(error) => println(error)
+
+          case Right(slots) => {
+            println(slots.mkString(", ").trim)
+          }
+        }
       }
 
       case Commands.SlotByRegNumber.message => {
 
         val slot = parkingLot.getSlotByRegNumber(splittedCommand(1)) match {
           case Left(error) => println(error)
+
           case Right(slot) => println(slot)
         }
 
@@ -64,9 +70,8 @@ object CommandParser {
 
       case Commands.Exit.message => System.exit(0)
 
+      case _ => println("Invalid command")
 
     }
-
   }
-
 }
