@@ -74,15 +74,15 @@ class ParkingLot(maxCapacity: Int) {
     *
     * @param slot is number of slot
     */
-  def unregisterVehicle(slot: Int): Unit = {
+  def leaveVehicle(slot: Int): Unit = {
 
     parkingSlots.get(slot) match {
 
       case Some(vehicle) => {
+        allocator.releaseSlot(slot)
         deleteFromColorVehicles(vehicle)
         deleteFromRegNumberSlot(vehicle)
         deleteFromColorSlots(slot, vehicle)
-        allocator.checkAndUpdateMinFreeSlot(slot)
 
         parkingSlots -= slot
         currentCapacity -= 1
@@ -180,7 +180,7 @@ class ParkingLot(maxCapacity: Int) {
     * @return allocated slot
     */
   private def allocateSlot(): Int = {
-    allocator.allocateSlot()
+    allocator.acquireSlot()
   }
 
   private def deleteFromColorVehicles(vehicle: Vehicle): Unit = {

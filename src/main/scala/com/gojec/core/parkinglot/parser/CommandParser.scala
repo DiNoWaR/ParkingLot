@@ -23,7 +23,7 @@ object CommandParser {
 
       case Commands.Park.message => parkingLot.parkVehicle(Vehicle(splittedCommand(1), splittedCommand(2)))
 
-      case Commands.Leave.message => parkingLot.unregisterVehicle(splittedCommand(1).toInt)
+      case Commands.Leave.message => parkingLot.leaveVehicle(splittedCommand(1).toInt)
 
       case Commands.Status.message => {
 
