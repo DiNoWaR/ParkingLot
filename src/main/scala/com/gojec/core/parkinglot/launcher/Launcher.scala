@@ -13,7 +13,7 @@ object Launcher {
 
   def main(args: Array[String]): Unit = {
 
-    println("||Parking Lot is launched||")
+    println("|Parking Lot is launched|")
     println("")
 
     if (args.isEmpty) {

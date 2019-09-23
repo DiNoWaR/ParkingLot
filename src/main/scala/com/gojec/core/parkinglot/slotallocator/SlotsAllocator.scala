@@ -3,7 +3,7 @@ package com.gojec.core.parkinglot.slotallocator
 import scala.collection.mutable.{Set => MSet}
 
 /**
-  * Object that allocate nearest free slot for vehicles
+  * Allocates nearest free slot for vehicles
   *
   * @param maxCapacity is max capacity of parking lot
   */

@@ -17,8 +17,16 @@ object CommandParser {
     splittedCommand.head match {
 
       case Commands.CreateParkingLot.message => {
-        parkingLot = new ParkingLot(splittedCommand(1).toInt)
-        println(s"Created a parking lot with ${splittedCommand(1)} slots")
+
+        val numberOfSlots = splittedCommand(1).toInt
+
+        if (numberOfSlots >= 1) {
+          parkingLot = new ParkingLot(numberOfSlots)
+          println(s"Created a parking lot with ${splittedCommand(1)} slots")
+        }
+        else {
+          println("Invalid number of parking slots. Try again")
+        }
       }
 
       case Commands.Park.message => parkingLot.parkVehicle(Vehicle(splittedCommand(1), splittedCommand(2)))

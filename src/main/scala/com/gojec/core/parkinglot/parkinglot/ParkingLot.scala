@@ -8,8 +8,6 @@ import scala.collection.mutable.{ArrayBuffer, Map}
 /**
   * Contains and manages parking functionality
   *
-  * All operations work for O(1) complexity
-  *
   * @param maxCapacity is max capacity of vehicles in parking
   */
 class ParkingLot(maxCapacity: Int) {
@@ -70,7 +68,7 @@ class ParkingLot(maxCapacity: Int) {
   }
 
   /**
-    * Removes the vehicle to parking lot
+    * Removes the vehicle from parking lot
     *
     * @param slot is number of slot
     */
