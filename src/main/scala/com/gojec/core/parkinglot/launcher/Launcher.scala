@@ -13,8 +13,7 @@ object Launcher {
 
   def main(args: Array[String]): Unit = {
 
-    println("|Parking Lot is launched|")
-    println("")
+    println("Parking Lot is launched \n")
 
     if (args.isEmpty) {
       InteractiveRunner.run()
