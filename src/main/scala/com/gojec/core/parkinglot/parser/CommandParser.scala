@@ -16,7 +16,7 @@ object CommandParser {
 
     splittedCommand.head match {
 
-      case Commands.CreateParkingLot.message => {
+      case Commands.CreateParkingLot.message =>
 
         val numberOfSlots = splittedCommand(1).toInt
 
@@ -27,13 +27,12 @@ object CommandParser {
         else {
           println("Invalid number of parking slots. Try again")
         }
-      }
 
       case Commands.Park.message => parkingLot.parkVehicle(Vehicle(splittedCommand(1), splittedCommand(2)))
 
       case Commands.Leave.message => parkingLot.leaveVehicle(splittedCommand(1).toInt)
 
-      case Commands.Status.message => {
+      case Commands.Status.message =>
 
         System.out.format("%1s%20s%10s", "Slot No.", "Registration No", "Colour")
         println()
@@ -42,9 +41,8 @@ object CommandParser {
           System.out.format("%1s%25s%11s", item._1.toString, item._2.regNumber, item._2.color)
           println()
         })
-      }
 
-      case Commands.RegNumbersByColor.message => {
+      case Commands.RegNumbersByColor.message =>
 
         parkingLot.getRegNumbersByColor(splittedCommand(1)) match {
           case Left(error) => println(error)
@@ -53,9 +51,8 @@ object CommandParser {
             println(regNumbers.mkString(", ").trim)
           }
         }
-      }
 
-      case Commands.SlotsByColor.message => {
+      case Commands.SlotsByColor.message =>
         parkingLot.getSlotsByColor(splittedCommand(1)) match {
 
           case Left(error) => println(error)
@@ -64,17 +61,14 @@ object CommandParser {
             println(slots.mkString(", ").trim)
           }
         }
-      }
 
-      case Commands.SlotByRegNumber.message => {
+      case Commands.SlotByRegNumber.message =>
 
-        val slot = parkingLot.getSlotByRegNumber(splittedCommand(1)) match {
+        parkingLot.getSlotByRegNumber(splittedCommand(1)) match {
           case Left(error) => println(error)
 
           case Right(slot) => println(slot)
         }
-
-      }
 
       case Commands.Exit.message => System.exit(0)
 

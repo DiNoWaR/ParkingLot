@@ -1,6 +1,6 @@
 package com.gojec.core.parkinglot.slotallocator
 
-import scala.collection.mutable.{Set => MSet}
+import scala.collection.mutable.{TreeSet => MSet}
 
 /**
   * Allocates nearest free slot for vehicles
